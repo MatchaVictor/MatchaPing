@@ -180,13 +180,25 @@
             });
         });
         function fetchDiscordStatus() {
-    const botToken = 'MTM0NjgxMzM0Nzg1Njc3NzI1Nw.GBgBif.0F6gC64iA8yb7S7UoTYLvbohIDRi8528N23pJU'; // Replace with your actual bot token
-
-    fetch(`https://discord.com/api/v10/users/434790190809350165`, {
-        headers: {
-            Authorization: `Bot ${botToken}`
-        }
-    })
+    fetch('/.netlify/functions/server/discord-status') // Use the proxy endpoint
+        .then(response => response.json())
+        .then(data => {
+            let status = data.presence?.status || "offline";
+            const statusDisplay = document.getElementById('discordStatus');
+            if (status === 'online') {
+                statusDisplay.textContent = 'Discord Status: Online';
+            } else if (status === 'idle') {
+                statusDisplay.textContent = 'Discord Status: Idle';
+            } else if (status === 'dnd') {
+                statusDisplay.textContent = 'Discord Status: Do Not Disturb';
+            } else {
+                statusDisplay.textContent = 'Discord Status: Offline';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching Discord status:', error);
+            document.getElementById('discordStatus').textContent = 'Discord Status: Error';
+        });
             .then(response => response.json())
             .then(data => {
                 let status = data.presence?.status || "offline";
