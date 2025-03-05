@@ -21,7 +21,9 @@ client.on('ready', () => {
     client.on('presenceUpdate', (oldPresence, newPresence) => {
         if (newPresence.userId === userId) {
             if (newPresence.activities.length > 0) {
-                activityStatus = newPresence.activities[0].name;
+                activityStatus = newPresence.activities[0].name; // Get the first activity's name
+            } else if (newPresence.presence?.activities[0]?.state) { // Check for custom status
+                activityStatus = newPresence.presence.activities[0].state; // Get custom status text
             } else {
                 activityStatus = 'No Activity';
             }
