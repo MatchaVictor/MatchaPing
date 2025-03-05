@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
 const cors = require('cors');
 const serverless = require('serverless-http');
-const fetch = require('node-fetch'); // Import node-fetch
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); // Fix import for node-fetch
 
 const app = express();
 app.use(cors());
