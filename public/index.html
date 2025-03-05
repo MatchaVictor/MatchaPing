@@ -4,7 +4,7 @@
     <title>Matcha Notifications</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Chicago', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,7 +35,6 @@
         }
 
         .title {
-            font-family: 'Chicago', sans-serif;
             font-size: 2.5em;
             margin: 0;
             color: #333;
@@ -182,7 +181,7 @@
         });
 
         function fetchDiscordStatus() {
-            const botToken = 'MTM0NjgxMzM0Nzg1Njc3NzI1Nw.GBgBif.0F6gC64iA8yb7S7UoTYLvbohIDRi8528N23pJU'; // Replace with your bot token
+            const botToken = process.env.DISCORD_BOT_TOKEN;
 
             fetch(`https://discord.com/api/v10/users/434790190809350165`, {
                 headers: {
@@ -210,7 +209,7 @@
         }
 
         function fetchActivityStatus() {
-            fetch('/.netlify/functions/server/activity') // Update with your server's URL
+            fetch('/.netlify/functions/server/activity')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('activityStatus').textContent = `Activity: ${data.activity}`;
