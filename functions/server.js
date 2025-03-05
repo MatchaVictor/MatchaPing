@@ -31,6 +31,12 @@ client.on('ready', () => {
     });
 });
 
+console.log("Bot Token:", botToken); // Add this line for debugging
+
+client.login(botToken).catch(error => {
+    console.error('Error logging in:', error);
+});
+
 client.login(botToken).catch(error => {
     console.error('Error logging in:', error);
 });
