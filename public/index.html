@@ -199,24 +199,6 @@
             console.error('Error fetching Discord status:', error);
             document.getElementById('discordStatus').textContent = 'Discord Status: Error';
         });
-            .then(response => response.json())
-            .then(data => {
-                let status = data.presence?.status || "offline";
-                const statusDisplay = document.getElementById('discordStatus');
-                if (status === 'online') {
-                    statusDisplay.textContent = 'Discord Status: Online';
-                } else if (status === 'idle') {
-                    statusDisplay.textContent = 'Discord Status: Idle';
-                } else if (status === 'dnd') {
-                    statusDisplay.textContent = 'Discord Status: Do Not Disturb';
-                } else {
-                    statusDisplay.textContent = 'Discord Status: Offline';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching Discord status:', error);
-                document.getElementById('discordStatus').textContent = 'Discord Status: Error';
-            });
         }
 
         function fetchActivityStatus() {
