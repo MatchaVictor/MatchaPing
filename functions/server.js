@@ -3,11 +3,12 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
 const cors = require('cors');
 const serverless = require('serverless-http');
+const fetch = require('node-fetch'); // Import node-fetch
 
 const app = express();
 app.use(cors());
 
-const botToken = process.env.DISCORD_BOT_TOKEN; // Get token from environment variable
+const botToken = process.env.DISCORD_BOT_TOKEN;
 const userId = '434790190809350165';
 
 const client = new Client({ intents: [GatewayIntentBits.GuildPresences, GatewayIntentBits.Guilds] });
@@ -32,6 +33,27 @@ client.login(botToken);
 
 app.get('/.netlify/functions/server/activity', (req, res) => {
     res.json({ activity: activityStatus });
+});
+
+// New endpoint for Discord status proxy
+app.get('/.netlify/functions/server/discord-status', async (req, res) => {
+    try {
+        const response = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+            headers: {
+                Authorization: `Bot ${botToken}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Discord API returned status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching Discord status:', error);
+        res.status(500).json({ error: 'Failed to fetch Discord status' });
+    }
 });
 
 module.exports.handler = serverless(app);
