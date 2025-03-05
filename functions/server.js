@@ -29,9 +29,14 @@ client.on('ready', () => {
     });
 });
 
-client.login(botToken);
+client.login(botToken).catch(error => {
+    console.error('Error logging in:', error);
+});
 
 app.get('/.netlify/functions/server/activity', (req, res) => {
+    if (!client.user) {
+        return res.status(500).json({ error: 'Bot is not logged in' });
+    }
     res.json({ activity: activityStatus });
 });
 

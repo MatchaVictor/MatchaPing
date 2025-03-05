@@ -179,31 +179,42 @@
                 resultDiv.innerHTML = '❌ Error: ' + error.message;
             });
         });
+
         function fetchDiscordStatus() {
-    fetch('/.netlify/functions/server/discord-status') // Use the proxy endpoint
-        .then(response => response.json())
-        .then(data => {
-            let status = data.presence?.status || "offline";
-            const statusDisplay = document.getElementById('discordStatus');
-            if (status === 'online') {
-                statusDisplay.textContent = 'Discord Status: Online';
-            } else if (status === 'idle') {
-                statusDisplay.textContent = 'Discord Status: Idle';
-            } else if (status === 'dnd') {
-                statusDisplay.textContent = 'Discord Status: Do Not Disturb';
-            } else {
-                statusDisplay.textContent = 'Discord Status: Offline';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching Discord status:', error);
-            document.getElementById('discordStatus').textContent = 'Discord Status: Error';
-        });
+            fetch('/.netlify/functions/server/discord-status') // Use the proxy endpoint
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let status = data.presence?.status || "offline";
+                    const statusDisplay = document.getElementById('discordStatus');
+                    if (status === 'online') {
+                        statusDisplay.textContent = 'Discord Status: Online';
+                    } else if (status === 'idle') {
+                        statusDisplay.textContent = 'Discord Status: Idle';
+                    } else if (status === 'dnd') {
+                        statusDisplay.textContent = 'Discord Status: Do Not Disturb';
+                    } else {
+                        statusDisplay.textContent = 'Discord Status: Offline';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching Discord status:', error);
+                    document.getElementById('discordStatus').textContent = 'Discord Status: Error';
+                });
         }
 
         function fetchActivityStatus() {
             fetch('/.netlify/functions/server/activity')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('activityStatus').textContent = `Activity: ${data.activity}`;
                 })
