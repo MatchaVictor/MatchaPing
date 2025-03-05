@@ -2,6 +2,26 @@
 <html>
 <head>
     <title>Notification Sender</title>
+    <style>
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s linear infinite;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #result {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Send a Notification</h1>
@@ -16,6 +36,8 @@
         <textarea id="message" name="message"></textarea><br><br>
 
         <button type="button" id="sendButton">Send Notification</button>
+        <div class="spinner" id="loadingSpinner"></div>
+        <div id="result"></div>
     </form>
 
     <script>
@@ -31,13 +53,21 @@
             formData.append('subject', subject);
             formData.append('message', message);
 
+            const spinner = document.getElementById('loadingSpinner');
+            const resultDiv = document.getElementById('result');
+            spinner.style.display = 'block'; // Show spinner
+            resultDiv.innerHTML = ''; // Clear previous results
+
             fetch(zapierWebhookUrl, {
                 method: 'POST',
                 body: formData
             }).then(() => {
-                console.log('Notification sent!');
+                spinner.style.display = 'none'; // Hide spinner
+                const currentTime = new Date().toLocaleTimeString();
+                resultDiv.innerHTML = '✅ Success: ' + currentTime;
             }).catch(error => {
-                console.error('Error sending notification:', error);
+                spinner.style.display = 'none'; // Hide spinner
+                resultDiv.innerHTML = '❌ Error: ' + error.message;
             });
         });
     </script>
