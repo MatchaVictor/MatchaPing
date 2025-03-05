@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notification Sender</title>
+</head>
+<body>
+    <h1>Send a Notification</h1>
+    <form id="notificationForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="subject">Subject:</label><br>
+        <input type="text" id="subject" name="subject"><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message"></textarea><br><br>
+
+        <button type="button" id="sendButton">Send Notification</button>
+    </form>
+
+    <script>
+        document.getElementById('sendButton').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/21946333/2q1epib/'; // Replace with your Zapier Webhook URL
+
+            fetch(zapierWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    subject: subject,
+                    message: message
+                })
+            }).then(() => {
+                console.log('Notification sent!');
+            }).catch(error => {
+                console.error('Error sending notification:', error);
+            });
+        });
+    </script>
+</body>
+</html>
