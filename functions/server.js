@@ -42,10 +42,10 @@ app.get('/.netlify/functions/server/activity', (req, res) => {
     res.json({ activity: activityStatus });
 });
 
-// New endpoint for Discord status proxy
+// New endpoint for Discord status proxy (updated with presences=true)
 app.get('/.netlify/functions/server/discord-status', async (req, res) => {
     try {
-        const response = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+        const response = await fetch(`https://discord.com/api/v10/users/${userId}?presences=true`, { // Add ?presences=true
             headers: {
                 Authorization: `Bot ${botToken}`
             }
