@@ -179,15 +179,14 @@
                 resultDiv.innerHTML = '❌ Error: ' + error.message;
             });
         });
-
         function fetchDiscordStatus() {
-            const botToken = process.env.DISCORD_BOT_TOKEN;
+    const botToken = 'MTM0NjgxMzM0Nzg1Njc3NzI1Nw.GBgBif.0F6gC64iA8yb7S7UoTYLvbohIDRi8528N23pJU'; // Replace with your actual bot token
 
-            fetch(`https://discord.com/api/v10/users/434790190809350165`, {
-                headers: {
-                    Authorization: `Bot ${botToken}`
-                }
-            })
+    fetch(`https://discord.com/api/v10/users/434790190809350165`, {
+        headers: {
+            Authorization: `Bot ${botToken}`
+        }
+    })
             .then(response => response.json())
             .then(data => {
                 let status = data.presence?.status || "offline";
